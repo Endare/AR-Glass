@@ -18,6 +18,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.VideoView;
+
 import com.ne0fhyklabs.freeflight.R;
 import com.ne0fhyklabs.freeflight.drone.DroneProxy.EVideoRecorderCapability;
 import com.ne0fhyklabs.freeflight.tasks.GetMediaObjectsListTask;

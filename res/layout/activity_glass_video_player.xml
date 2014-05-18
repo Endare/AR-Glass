@@ -30,7 +30,7 @@
         android:background="@drawable/glass_video_info_bg"
         android:layout_gravity="bottom">
 
-        <com.google.glass.widget.SliderView
+        <com.google.glass.custom.widget.SliderView
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="12dp"

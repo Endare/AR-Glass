@@ -1,5 +1,6 @@
 package com.ne0fhyklabs.freeflight.fragments;
 
+import main.kotlin.com.ne0fhyklabs.freeflight.ui.controls.GlassSliderPreference;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -12,24 +13,12 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
-import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.ActionMode;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.accessibility.AccessibilityEvent;
 
 import com.google.android.glass.media.Sounds;
-import com.google.android.glass.touchpad.Gesture;
-import com.google.android.glass.touchpad.GestureDetector;
 import com.ne0fhyklabs.freeflight.FreeFlightApplication;
 import com.ne0fhyklabs.freeflight.R;
 import com.ne0fhyklabs.freeflight.controllers.Controller;
@@ -42,9 +31,6 @@ import com.ne0fhyklabs.freeflight.receivers.NetworkChangeReceiver;
 import com.ne0fhyklabs.freeflight.receivers.NetworkChangeReceiverDelegate;
 import com.ne0fhyklabs.freeflight.service.DroneControlService;
 import com.ne0fhyklabs.freeflight.settings.ApplicationSettings;
-import com.ne0fhyklabs.freeflight.ui.controls.SeekBarPreference;
-
-import org.jetbrains.annotations.Nullable;
 
 /**
  * AR Glass preference fragment.
@@ -218,8 +204,7 @@ public class SettingsFragment extends GlassPreferenceFragment {
                 .getConnectionInfo().getMacAddress();
 
         LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(context);
-		lbm.registerReceiver(mConfigChangedReceiver, new IntentFilter(DroneControlService
-																	  .DRONE_CONFIG_STATE_CHANGED_ACTION));
+		lbm.registerReceiver(mConfigChangedReceiver, new IntentFilter(DroneControlService.DRONE_CONFIG_STATE_CHANGED_ACTION));
 		lbm.registerReceiver(mConnChangedReceiver, new IntentFilter(DroneControlService.DRONE_CONNECTION_CHANGED_ACTION));
 
         getActivity().registerReceiver(mNetChangeReceiver, new IntentFilter(WifiManager
@@ -237,8 +222,8 @@ public class SettingsFragment extends GlassPreferenceFragment {
         final Context context = getActivity().getApplicationContext();
 
 		LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(context);
-                lbm.unregisterReceiver(mConfigChangedReceiver);
-				lbm.unregisterReceiver(mConnChangedReceiver);
+        lbm.unregisterReceiver(mConfigChangedReceiver);
+		lbm.unregisterReceiver(mConnChangedReceiver);
         getActivity().unregisterReceiver(mNetChangeReceiver);
 
         AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
@@ -268,10 +253,10 @@ public class SettingsFragment extends GlassPreferenceFragment {
         final Preference appVersion = prefs.findPreference(getText(R.string.key_app_version));
         if(appVersion != null){
             try {
-                final PackageInfo pInfo = context.getPackageManager().getPackageInfo(context
-                        .getPackageName(), 0);
+                final PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
                 appVersion.setSummary(pInfo.versionName);
-            } catch (PackageManager.NameNotFoundException e) {
+            } 
+            catch (PackageManager.NameNotFoundException e) {
                 Log.w(TAG, "Unable to get app version.", e);
             }
         }
@@ -295,8 +280,7 @@ public class SettingsFragment extends GlassPreferenceFragment {
         final Preference arHardwareVersion = prefs.findPreference(getString(R.string
                 .key_ar_hardware_version));
         if (arHardwareVersion != null) {
-            arHardwareVersion.setSummary(isDroneConnected ? droneConfig.getHardwareVersion():
-                    "--");
+            arHardwareVersion.setSummary(isDroneConnected ? droneConfig.getHardwareVersion(): "--");
         }
 
         final Preference arSoftwareVersion = prefs.findPreference(getString(R.string
@@ -327,15 +311,21 @@ public class SettingsFragment extends GlassPreferenceFragment {
             usbRecordPref.setOnPreferenceChangeListener(mDronePrefChangeListener);
         }
 
-        final SeekBarPreference deviceTilt = (SeekBarPreference) prefs.findPreference(getString(R
-                .string.key_device_tilt));
+        final GlassSliderPreference deviceTilt = (GlassSliderPreference) prefs.findPreference(getString(R.string.key_device_tilt));
         if (deviceTilt != null) {
             deviceTilt.setValue(droneConfig.getDeviceTiltMax());
             deviceTilt.setOnPreferenceChangeListener(mDronePrefChangeListener);
+            deviceTilt.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    deviceTilt.launchSliderDialog(getChildFragmentManager());
+                    return true;
+                }
+            });
         }
 
-        final CheckBoxPreference pairingPref = (CheckBoxPreference) prefs.findPreference(getText
-                (R.string.key_network_pairing));
+        final CheckBoxPreference pairingPref = (CheckBoxPreference) prefs.findPreference(getText(R.string.key_network_pairing));
+        
         if (pairingPref != null) {
             final String ownerMac = droneConfig.getOwnerMac();
             if (ownerMac != null && !ownerMac.equalsIgnoreCase(NULL_MAC))
@@ -345,43 +335,65 @@ public class SettingsFragment extends GlassPreferenceFragment {
             pairingPref.setOnPreferenceChangeListener(mDronePrefChangeListener);
         }
 
-        final SeekBarPreference altPref = (SeekBarPreference) prefs.findPreference(getText(R
-                .string.key_alt_limit));
+        final GlassSliderPreference altPref = (GlassSliderPreference) prefs.findPreference(getText(R.string.key_alt_limit));
         if (altPref != null) {
             altPref.setValue(droneConfig.getAltitudeLimit());
             altPref.setOnPreferenceChangeListener(mDronePrefChangeListener);
+            altPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    altPref.launchSliderDialog(getChildFragmentManager());
+                    return true;
+                }
+            });
         }
 
-        final SeekBarPreference vertSpeedPref = (SeekBarPreference) prefs.findPreference(getText(R
-                .string.key_vert_speed));
+        final GlassSliderPreference vertSpeedPref = (GlassSliderPreference) prefs.findPreference(getText(R.string.key_vert_speed));
         if (vertSpeedPref != null) {
             vertSpeedPref.setValue(droneConfig.getVertSpeedMax());
             vertSpeedPref.setOnPreferenceChangeListener(mDronePrefChangeListener);
+            vertSpeedPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    vertSpeedPref.launchSliderDialog(getChildFragmentManager());
+                    return true;
+                }
+            });
         }
 
-        final SeekBarPreference yawSpeedPref = (SeekBarPreference) prefs.findPreference(getText(R
-                .string.key_yaw_speed));
+        final GlassSliderPreference yawSpeedPref = (GlassSliderPreference) prefs.findPreference(getText(R.string.key_yaw_speed));
         if (yawSpeedPref != null) {
             yawSpeedPref.setValue(droneConfig.getYawSpeedMax());
             yawSpeedPref.setOnPreferenceChangeListener(mDronePrefChangeListener);
+            yawSpeedPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+	            @Override
+	            public boolean onPreferenceClick(Preference preference) {
+	                yawSpeedPref.launchSliderDialog(getChildFragmentManager());
+	                return true;
+	            }
+	        });
         }
 
-        final SeekBarPreference tiltPref = (SeekBarPreference) prefs.findPreference(getText(R
-                .string.key_drone_tilt));
+        final GlassSliderPreference tiltPref = (GlassSliderPreference) prefs.findPreference(getText(R.string.key_drone_tilt));
         if (tiltPref != null) {
             tiltPref.setValue(droneConfig.getTilt());
             tiltPref.setOnPreferenceChangeListener(mDronePrefChangeListener);
+            tiltPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    tiltPref.launchSliderDialog(getChildFragmentManager());
+                    return true;
+                }
+            });
         }
 
-        final CheckBoxPreference outdoorHullPref = (CheckBoxPreference) prefs.findPreference(getText(R
-                .string.key_outdoor_hull));
+        final CheckBoxPreference outdoorHullPref = (CheckBoxPreference) prefs.findPreference(getText(R.string.key_outdoor_hull));
         if (outdoorHullPref != null) {
             outdoorHullPref.setChecked(droneConfig.isOutdoorHull());
             outdoorHullPref.setOnPreferenceChangeListener(mDronePrefChangeListener);
         }
 
-        final CheckBoxPreference outdoorFlightPref = (CheckBoxPreference) prefs.findPreference(getText(R
-                .string.key_outdoor_flight));
+        final CheckBoxPreference outdoorFlightPref = (CheckBoxPreference) prefs.findPreference(getText(R.string.key_outdoor_flight));
         if (outdoorFlightPref != null) {
             outdoorFlightPref.setChecked(droneConfig.isOutdoorFlight());
             outdoorFlightPref.setOnPreferenceChangeListener(mDronePrefChangeListener);

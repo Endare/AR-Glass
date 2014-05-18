@@ -1,5 +1,6 @@
 package com.ne0fhyklabs.freeflight.ui.controls;
 
+import main.kotlin.com.ne0fhyklabs.freeflight.utils.GlassUtils;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.media.AudioManager;
@@ -22,7 +23,6 @@ import android.widget.TextView;
 import com.google.android.glass.touchpad.Gesture;
 import com.google.android.glass.touchpad.GestureDetector;
 import com.ne0fhyklabs.freeflight.R;
-import com.ne0fhyklabs.freeflight.utils.GlassUtils;
 
 public class SeekBarPreference extends DialogPreference implements OnSeekBarChangeListener {
 	
@@ -77,7 +77,7 @@ public class SeekBarPreference extends DialogPreference implements OnSeekBarChan
      * @param context application context
      */
     private void setupGestureDetector(Context context){
-        if(GlassUtils.instance$.isGlassDevice()){
+        if(GlassUtils.isGlassDevice()){
             final AudioManager audioMan = (AudioManager) context.getSystemService(Context
                     .AUDIO_SERVICE);
             mGlassDetector = new GestureDetector(context);
@@ -168,7 +168,7 @@ public class SeekBarPreference extends DialogPreference implements OnSeekBarChan
 		
 		updateView(view);
 
-        if (view != null && GlassUtils.instance$.isGlassDevice()) {
+        if (view != null && GlassUtils.isGlassDevice()) {
             view.setOnGenericMotionListener(new View.OnGenericMotionListener() {
                 @Override
                 public boolean onGenericMotion(View v, MotionEvent event) {

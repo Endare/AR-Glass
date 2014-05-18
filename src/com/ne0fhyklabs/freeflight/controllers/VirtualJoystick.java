@@ -4,6 +4,7 @@
  */
 package com.ne0fhyklabs.freeflight.controllers;
 
+import main.kotlin.com.ne0fhyklabs.freeflight.utils.GlassUtils;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,7 +22,6 @@ import com.ne0fhyklabs.freeflight.ui.hud.JoystickFactory;
 import com.ne0fhyklabs.freeflight.ui.hud.JoystickListener;
 import com.ne0fhyklabs.freeflight.ui.hud.Sprite;
 import com.ne0fhyklabs.freeflight.ui.hud.Sprite.Align;
-import com.ne0fhyklabs.freeflight.utils.GlassUtils;
 
 public class VirtualJoystick extends Controller implements DeviceOrientationChangeDelegate {
 
@@ -92,7 +92,7 @@ public class VirtualJoystick extends Controller implements DeviceOrientationChan
     @Override
     protected boolean initImpl() {
 
-        if (GlassUtils.instance$.isGlassDevice())
+        if (GlassUtils.isGlassDevice())
             return false;
 
         magnetoEnabled = mSettings.isAbsoluteControlEnabled();
@@ -376,7 +376,7 @@ public class VirtualJoystick extends Controller implements DeviceOrientationChan
             mDroneControl.setDeviceOrientation(0, 0);
         }
 
-        final boolean isInTouchMode = !GlassUtils.instance$.isGlassDevice();
+        final boolean isInTouchMode = !GlassUtils.isGlassDevice();
 
         if (!running) {
             pitchGazBase = orientation[PITCH];

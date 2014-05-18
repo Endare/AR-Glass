@@ -13,7 +13,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.google.glass.widget.SliderView;
+import com.google.glass.custom.widget.SliderView;
 import com.ne0fhyklabs.freeflight.R;
 import com.ne0fhyklabs.freeflight.receivers.DroneConnectionChangeReceiverDelegate;
 import com.ne0fhyklabs.freeflight.receivers.DroneConnectionChangedReceiver;

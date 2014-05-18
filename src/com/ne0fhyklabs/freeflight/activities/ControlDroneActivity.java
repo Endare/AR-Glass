@@ -63,10 +63,11 @@ import com.ne0fhyklabs.freeflight.settings.ApplicationSettings;
 import com.ne0fhyklabs.freeflight.settings.ApplicationSettings.ControlMode;
 import com.ne0fhyklabs.freeflight.transcodeservice.TranscodingService;
 import com.ne0fhyklabs.freeflight.ui.HudViewController;
-import com.ne0fhyklabs.freeflight.ui.HudViewProxy;
-import com.ne0fhyklabs.freeflight.utils.GlassUtils;
 
 import java.io.File;
+
+import main.kotlin.com.ne0fhyklabs.freeflight.ui.HudViewProxy;
+import main.kotlin.com.ne0fhyklabs.freeflight.utils.GlassUtils;
 
 @SuppressLint("NewApi")
 /**
@@ -219,18 +220,30 @@ public class ControlDroneActivity extends FragmentActivity implements
     public void setDroneRoll(float roll) {
         if (droneControlService != null) {
             if (Math.abs(roll) <= MIN_TILT_ANGLE_THRESHOLD)
-                roll = 0;
+            if (Math.abs(roll) <= MIN_TILT_ANGLE_THRESHOLD) {
+               roll = 0;
+            }
+
             droneControlService.setRoll(roll);
         }
-    }
-
-    public void setDronePitch(float pitch) {
-        if (droneControlService != null) {
-            if (Math.abs(pitch) <= MIN_TILT_ANGLE_THRESHOLD)
-                pitch = 0;
-            droneControlService.setPitch(pitch);
+        else{
+            Log.d(TAG, "Invalid drone control service.");
         }
     }
+    
+    public void setDronePitch(float pitch) {
+    if (droneControlService != null) {
+        if (Math.abs(pitch) <= MIN_TILT_ANGLE_THRESHOLD)
+        	if (Math.abs(pitch) <= MIN_TILT_ANGLE_THRESHOLD) {
+        		pitch = 0;
+        	}
+        	droneControlService.setPitch(pitch);
+    	}
+		else{
+		    Log.d(TAG, "Invalid drone control service.");
+		}
+    }
+
 
     public void setDroneGaz(float gaz) {
         if (droneControlService != null) {
@@ -362,7 +375,7 @@ public class ControlDroneActivity extends FragmentActivity implements
         if (droneConfig != null) {
             setDroneTilt(droneConfig.getTilt());
 
-            if (GlassUtils.instance$.isGlassDevice()) {
+            if (GlassUtils.isGlassDevice()) {
                 // Reduce the live video stream resolution
                 droneConfig.setVideoCodec(DroneConfig.H264_360P_CODEC);
             }
@@ -511,6 +524,7 @@ public class ControlDroneActivity extends FragmentActivity implements
      */
     protected void onDroneServiceConnected() {
         if (droneControlService != null) {
+        	Log.d(TAG, "Connected to drone service. Resuming operation.");
             droneControlService.resume();
             droneControlService.requestDroneStatus();
 
@@ -537,7 +551,7 @@ public class ControlDroneActivity extends FragmentActivity implements
         if (mHudProxy != null)
             mHudProxy.setIsFlying(flying);
 
-        if (GlassUtils.instance$.isGlassDevice())
+        if (GlassUtils.isGlassDevice())
             droneControlService.setProgressiveCommandEnabled(flying);
     }
 
@@ -548,8 +562,7 @@ public class ControlDroneActivity extends FragmentActivity implements
     }
 
     protected void onNotifyLowDiskSpace() {
-        showWarningDialog(getString(R.string.your_device_is_low_on_disk_space),
-                WARNING_MESSAGE_DISMISS_TIME);
+        showWarningDialog(getString(R.string.your_device_is_low_on_disk_space), WARNING_MESSAGE_DISMISS_TIME);
     }
 
     protected void onNotifyLowUsbSpace() {

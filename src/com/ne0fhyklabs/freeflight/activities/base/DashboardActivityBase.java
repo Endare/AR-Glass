@@ -1,5 +1,7 @@
 package com.ne0fhyklabs.freeflight.activities.base;
 
+import main.kotlin.com.ne0fhyklabs.freeflight.activities.GlassGalleryActivity;
+import main.kotlin.com.ne0fhyklabs.freeflight.utils.GlassUtils;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -25,11 +27,10 @@ import com.google.android.glass.media.Sounds;
 import com.google.android.glass.widget.CardScrollAdapter;
 import com.google.android.glass.widget.CardScrollView;
 import com.ne0fhyklabs.freeflight.R;
-import com.ne0fhyklabs.freeflight.activities.GlassGalleryActivity;
+import com.ne0fhyklabs.freeflight.activities.GalleryActivity;
 import com.ne0fhyklabs.freeflight.receivers.MediaStorageReceiver;
 import com.ne0fhyklabs.freeflight.receivers.MediaStorageReceiverDelegate;
 import com.ne0fhyklabs.freeflight.tasks.GetMediaObjectsListTask;
-import com.ne0fhyklabs.freeflight.utils.GlassUtils;
 
 @SuppressLint("Registered")
 // There is no need to register this activity in the manifest as this is a base activity for others.
@@ -86,7 +87,7 @@ public abstract class DashboardActivityBase extends FragmentActivity implements 
         mAudioMgr = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         super.onCreate(savedInstanceState);
-        if(GlassUtils.instance$.isGlassDevice()){
+        if(GlassUtils.isGlassDevice()){
             setupGlassDashboard();
         }
         else{
@@ -173,15 +174,15 @@ public abstract class DashboardActivityBase extends FragmentActivity implements 
 
                     case R.string.PHOTOS:
                         startActivity(new Intent(DashboardActivityBase.this,
-                                GlassGalleryActivity.class).putExtra
-                                (GlassGalleryActivity.IntentExtras.instance$.getMEDIA_FILTER(),
+                                GalleryActivity.class).putExtra
+                                (GlassGalleryActivity.MEDIA_FILTER,
                                         GetMediaObjectsListTask.MediaFilter.IMAGES.ordinal()));
                         break;
 
                     case R.string.VIDEOS:
                         startActivity(new Intent(DashboardActivityBase.this,
-                                GlassGalleryActivity.class).putExtra
-                                (GlassGalleryActivity.IntentExtras.instance$.getMEDIA_FILTER(),
+                                GalleryActivity.class).putExtra
+                                (GlassGalleryActivity.MEDIA_FILTER,
                                         GetMediaObjectsListTask.MediaFilter.VIDEOS.ordinal()));
                         break;
                 }
@@ -220,7 +221,7 @@ public abstract class DashboardActivityBase extends FragmentActivity implements 
         if (Looper.myLooper() == null)
             throw new IllegalStateException("Should be called from UI thread");
 
-        if(!GlassUtils.instance$.isGlassDevice()) {
+        if(!GlassUtils.isGlassDevice()) {
             if (isFreeFlightEnabled()) {
                 btnFreeFlight.setChecked(true);
                 mBtnFreeFlightShadow.setVisibility(View.VISIBLE);
@@ -358,9 +359,9 @@ public abstract class DashboardActivityBase extends FragmentActivity implements 
             if(!(o instanceof Integer))
                 return defaultId;
 
-            int screenNameRes = (Integer) o;
+            Integer screenNameRes = (Integer) o;
             for(int i = 0; i < getCount(); i++){
-                if(screenNameRes == getItem(i))
+                if(screenNameRes == (Integer) getItem(i))
                     return i;
             }
 

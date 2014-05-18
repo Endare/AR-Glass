@@ -1,5 +1,6 @@
 package com.ne0fhyklabs.freeflight.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -18,8 +19,6 @@ import android.view.accessibility.AccessibilityEvent;
 
 import com.google.android.glass.touchpad.Gesture;
 import com.google.android.glass.touchpad.GestureDetector;
-
-import org.jetbrains.annotations.Nullable;
 
 /**
  * This class provides the necessary workarounds to make the default preference fragment screen
@@ -65,7 +64,7 @@ public class GlassPreferenceFragment extends PreferenceFragment {
      * Replace the current window callback with one supporting glass gesture events.
      * @param window
      */
-    private void updateWindowCallback(Window window){
+    public static void updateWindowCallback(Window window){
         if(window == null) {
             return;
         }
@@ -76,13 +75,29 @@ public class GlassPreferenceFragment extends PreferenceFragment {
             window.setCallback(glassCb);
         }
     }
+    
+    /**
+     * Replace the current window callback with one supporting glass gesture events.
+     * @param window
+     * @param glassDetector GestureDetector to which the generic motion events should be directed.
+     */
+    public static void updateWindowCallback(Window window, GestureDetector glassDetector) {
+    	if (window == null) {
+             return;
+        }
+        final Window.Callback originalCb = window.getCallback();
+        if(!(originalCb instanceof GlassCallback)){
+        	final GlassCallback glassCb = new GlassCallback(window.getContext(), originalCb, glassDetector);
+       		window.setCallback(glassCb);
+        }
+    }
 
     /**
      * Restore the original window callback for this window, if it was updated with a glass
      * window callback.
      * @param window
      */
-    private void restoreWindowCallback(Window window){
+    public static void restoreWindowCallback(Window window){
         if(window == null){
             return;
         }
@@ -143,6 +158,11 @@ public class GlassPreferenceFragment extends PreferenceFragment {
                 }
             });
         }
+        
+        public GlassCallback(Context context, Window.Callback original, GestureDetector glassDetector) {
+        	mOriginalCb = original;
+        	mGlassDetector = glassDetector;
+        }
 
         /**
          * @return the Window.Callback instance this one replaced.
@@ -173,8 +193,7 @@ public class GlassPreferenceFragment extends PreferenceFragment {
 
         @Override
         public boolean dispatchGenericMotionEvent(MotionEvent event) {
-            return mGlassDetector.onMotionEvent(event) || mOriginalCb.dispatchGenericMotionEvent
-                    (event);
+            return (mGlassDetector != null && mGlassDetector.onMotionEvent(event))  || mOriginalCb.dispatchGenericMotionEvent(event);
         }
 
         @Override
@@ -182,7 +201,6 @@ public class GlassPreferenceFragment extends PreferenceFragment {
             return mOriginalCb.dispatchPopulateAccessibilityEvent(event);
         }
 
-        @Nullable
         @Override
         public View onCreatePanelView(int featureId) {
             return mOriginalCb.onCreatePanelView(featureId);
@@ -227,8 +245,8 @@ public class GlassPreferenceFragment extends PreferenceFragment {
         public void onAttachedToWindow() {
             mOriginalCb.onAttachedToWindow();
         }
-
-        @Override
+        
+		@Override
         public void onDetachedFromWindow() {
             mOriginalCb.onDetachedFromWindow();
         }
@@ -243,7 +261,6 @@ public class GlassPreferenceFragment extends PreferenceFragment {
             return mOriginalCb.onSearchRequested();
         }
 
-        @Nullable
         @Override
         public ActionMode onWindowStartingActionMode(ActionMode.Callback callback) {
             return mOriginalCb.onWindowStartingActionMode(callback);

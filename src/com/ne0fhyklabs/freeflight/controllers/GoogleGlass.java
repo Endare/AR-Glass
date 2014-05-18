@@ -19,10 +19,11 @@ import com.ne0fhyklabs.freeflight.R;
 import com.ne0fhyklabs.freeflight.activities.ControlDroneActivity;
 import com.ne0fhyklabs.freeflight.drone.DroneConfig.EDroneVersion;
 import com.ne0fhyklabs.freeflight.settings.ApplicationSettings;
-import com.ne0fhyklabs.freeflight.ui.HudViewProxy;
-import com.ne0fhyklabs.freeflight.utils.GlassUtils;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import main.kotlin.com.ne0fhyklabs.freeflight.ui.HudViewProxy;
+import main.kotlin.com.ne0fhyklabs.freeflight.utils.GlassUtils;
 
 /**
  * EnhancedGestureDetector detects double tap gesture of second pointer when using multi touch in
@@ -64,6 +65,7 @@ public class GoogleGlass extends Controller {
         @Override
         public void onSensorChanged(SensorEvent event) {
             if (mDroneControl == null || !mIsGlassMode || !isActive()) {
+            	Log.d(TAG, "Inactive sensor!");
                 return;
             }
 
@@ -187,7 +189,6 @@ public class GoogleGlass extends Controller {
         mGestureDetector.setFingerListener(new GestureDetector.FingerListener() {
             @Override
             public void onFingerCountChanged(int previousCount, int currentCount) {
-                Log.i(TAG, "Current count: " + currentCount);
                 //Activate yaw control when two fingers
                 if (currentCount == YAW_CONTROL_TRIGGER){
                     mYawControlEnabled.set(true);
@@ -217,7 +218,7 @@ public class GoogleGlass extends Controller {
     @Override
     protected boolean initImpl() {
         Log.v(TAG, "Initializing Google Glass controller");
-        if (!GlassUtils.instance$.isGlassDevice())
+        if (!GlassUtils.isGlassDevice())
             return false;
 
         magnetoEnabled = mSettings.isAbsoluteControlEnabled();

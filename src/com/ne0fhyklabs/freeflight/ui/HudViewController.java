@@ -12,6 +12,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseIntArray;
 
 import com.ne0fhyklabs.freeflight.R;
@@ -22,6 +23,8 @@ import com.ne0fhyklabs.freeflight.video.VideoStageRenderer;
 
 public class HudViewController extends GLSurfaceView {
 
+	private final static String TAG = HudViewController.class.getSimpleName();
+	
     private static final int EMERGENCY_LABEL_ID = 13;
 
     private Text txtAlert;
@@ -88,7 +91,9 @@ public class HudViewController extends GLSurfaceView {
         final int res = emergencyStringMap.get(code);
 
         if (res != 0) {
-            txtAlert.setText(getContext().getString(res));
+        	final String emergencyText = getContext().getString(res);
+        	Log.d(TAG, "Emergency code received: " + emergencyText);
+        	txtAlert.setText(emergencyText);
             txtAlert.setVisibility(Text.VISIBLE);
             txtAlert.blink(true);
         } else {

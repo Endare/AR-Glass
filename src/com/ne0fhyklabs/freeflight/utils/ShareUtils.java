@@ -8,9 +8,10 @@ import android.net.Uri;
 import android.provider.MediaStore.Images;
 import android.provider.MediaStore.Video;
 import android.util.Log;
-import com.ne0fhyklabs.freeflight.R;
 
 import java.io.File;
+
+import com.ne0fhyklabs.freeflight.R;
 
 public final class ShareUtils
 {
