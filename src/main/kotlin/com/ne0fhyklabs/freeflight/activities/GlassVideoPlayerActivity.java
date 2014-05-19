@@ -1,11 +1,6 @@
 package main.kotlin.com.ne0fhyklabs.freeflight.activities;
 
-import com.google.android.glass.media.Sounds;
-import com.google.android.glass.touchpad.Gesture;
-import com.google.android.glass.touchpad.GestureDetector;
-import com.google.glass.custom.widget.SliderView;
-import com.ne0fhyklabs.freeflight.R;
-
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -13,7 +8,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,7 +17,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-public class GlassVideoPlayerActivity extends FragmentActivity {
+import com.google.android.glass.media.Sounds;
+import com.google.android.glass.touchpad.Gesture;
+import com.google.android.glass.touchpad.GestureDetector;
+import com.google.glass.custom.widget.SliderView;
+import com.ne0fhyklabs.freeflight.R;
+
+public class GlassVideoPlayerActivity extends Activity {
 	
 	private final static String TAG = "GlassVideoPlayerActivity";
     public final static String EXTRA_VIDEO_URI = "main.kotlin.com.ne0fhyklabs.freeflight.activities.EXTRA_VIDEO_URI";

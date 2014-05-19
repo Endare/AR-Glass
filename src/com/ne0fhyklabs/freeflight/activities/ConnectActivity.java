@@ -1,6 +1,7 @@
 
 package com.ne0fhyklabs.freeflight.activities;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -9,7 +10,6 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -21,9 +21,7 @@ import com.ne0fhyklabs.freeflight.receivers.DroneReadyReceiver;
 import com.ne0fhyklabs.freeflight.receivers.DroneReadyReceiverDelegate;
 import com.ne0fhyklabs.freeflight.service.DroneControlService;
 
-import java.util.Random;
-
-public class ConnectActivity extends FragmentActivity implements ServiceConnection, DroneReadyReceiverDelegate,
+public class ConnectActivity extends Activity implements ServiceConnection, DroneReadyReceiverDelegate,
         DroneConnectionChangeReceiverDelegate {
 
     private static final int[] TIPS = {

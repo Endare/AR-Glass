@@ -4,6 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.media.AudioManager;
+import android.os.AsyncTask.Status;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
+import android.widget.TextView;
+
 import com.google.android.glass.media.Sounds;
 import com.google.android.glass.widget.CardScrollAdapter;
 import com.google.android.glass.widget.CardScrollView;
@@ -17,25 +35,7 @@ import com.ne0fhyklabs.freeflight.utils.ARDroneMediaGallery;
 import com.ne0fhyklabs.freeflight.utils.ShareUtils;
 import com.ne0fhyklabs.freeflight.vo.MediaVO;
 
-import android.content.Context;
-import android.content.Intent;
-import android.media.AudioManager;
-import android.os.AsyncTask.Status;
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
-import android.widget.TextView;
-
-public class GlassGalleryActivity extends FragmentActivity {
+public class GlassGalleryActivity extends Activity {
 	
 	private final static String TAG = "GlassGalleryActivity";
 	private final static String SELECTED_ELEMENT = "SELECTED_ELEMENT";

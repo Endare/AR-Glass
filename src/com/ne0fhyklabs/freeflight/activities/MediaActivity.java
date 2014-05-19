@@ -1,14 +1,19 @@
 
 package com.ne0fhyklabs.freeflight.activities;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.ActionMode;
@@ -20,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+
 import com.ne0fhyklabs.freeflight.R;
 import com.ne0fhyklabs.freeflight.receivers.MediaReadyDelegate;
 import com.ne0fhyklabs.freeflight.receivers.MediaReadyReceiver;
@@ -34,15 +40,10 @@ import com.ne0fhyklabs.freeflight.ui.adapters.MediaSortSpinnerAdapter;
 import com.ne0fhyklabs.freeflight.utils.ARDroneMediaGallery;
 import com.ne0fhyklabs.freeflight.vo.MediaVO;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
 /**
  * This activity handles the photos and videos taken by the Parrot AR Drone.
  */
-public class MediaActivity extends FragmentActivity implements
+public class MediaActivity extends Activity implements
         OnItemClickListener,
         MediaReadyDelegate,
         MediaStorageReceiverDelegate {

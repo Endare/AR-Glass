@@ -7,7 +7,12 @@
 
 package com.ne0fhyklabs.freeflight.activities;
 
+import java.io.File;
+
+import main.kotlin.com.ne0fhyklabs.freeflight.ui.HudViewProxy;
+import main.kotlin.com.ne0fhyklabs.freeflight.utils.GlassUtils;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -22,20 +27,15 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.SoundEffectConstants;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.glass.media.Sounds;
-import com.google.android.glass.touchpad.Gesture;
-import com.google.android.glass.touchpad.GestureDetector;
 import com.ne0fhyklabs.freeflight.FreeFlightApplication;
 import com.ne0fhyklabs.freeflight.R;
 import com.ne0fhyklabs.freeflight.controllers.Controller;
@@ -57,22 +57,15 @@ import com.ne0fhyklabs.freeflight.receivers.DroneVideoRecordStateReceiverDelegat
 import com.ne0fhyklabs.freeflight.receivers.DroneVideoRecordingStateReceiver;
 import com.ne0fhyklabs.freeflight.receivers.WifiSignalStrengthChangedReceiver;
 import com.ne0fhyklabs.freeflight.receivers.WifiSignalStrengthReceiverDelegate;
-import com.ne0fhyklabs.freeflight.sensors.DeviceOrientationManager;
 import com.ne0fhyklabs.freeflight.service.DroneControlService;
 import com.ne0fhyklabs.freeflight.settings.ApplicationSettings;
-import com.ne0fhyklabs.freeflight.settings.ApplicationSettings.ControlMode;
 import com.ne0fhyklabs.freeflight.transcodeservice.TranscodingService;
 import com.ne0fhyklabs.freeflight.ui.HudViewController;
-
-import java.io.File;
-
-import main.kotlin.com.ne0fhyklabs.freeflight.ui.HudViewProxy;
-import main.kotlin.com.ne0fhyklabs.freeflight.utils.GlassUtils;
 
 @SuppressLint("NewApi")
 /**
  */
-public class ControlDroneActivity extends FragmentActivity implements
+public class ControlDroneActivity extends Activity implements
         WifiSignalStrengthReceiverDelegate, SettingsFragment.OnSettingsHandler,
         DroneVideoRecordStateReceiverDelegate, DroneEmergencyChangeReceiverDelegate,
         DroneBatteryChangedReceiverDelegate, DroneFlyingStateReceiverDelegate,

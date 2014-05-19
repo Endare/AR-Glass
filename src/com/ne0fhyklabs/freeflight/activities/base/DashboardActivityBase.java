@@ -3,6 +3,7 @@ package com.ne0fhyklabs.freeflight.activities.base;
 import main.kotlin.com.ne0fhyklabs.freeflight.activities.GlassGalleryActivity;
 import main.kotlin.com.ne0fhyklabs.freeflight.utils.GlassUtils;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,7 +11,6 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Looper;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SoundEffectConstants;
@@ -34,7 +34,7 @@ import com.ne0fhyklabs.freeflight.tasks.GetMediaObjectsListTask;
 
 @SuppressLint("Registered")
 // There is no need to register this activity in the manifest as this is a base activity for others.
-public abstract class DashboardActivityBase extends FragmentActivity implements MediaStorageReceiverDelegate {
+public abstract class DashboardActivityBase extends Activity implements MediaStorageReceiverDelegate {
     protected static final String TAG = "DashboardActivity";
 
     public enum EPhotoVideoState {

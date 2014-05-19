@@ -1,11 +1,15 @@
 package com.ne0fhyklabs.freeflight.activities;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnErrorListener;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
@@ -31,16 +35,12 @@ import com.ne0fhyklabs.freeflight.utils.DeviceCapabilitiesUtils;
 import com.ne0fhyklabs.freeflight.utils.ShareUtils;
 import com.ne0fhyklabs.freeflight.vo.MediaVO;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
 /**
  * GalleryActivity allows the user to browse media files one by one with ability
  * to slide to next and previous media file with simple gesture. Also it allows
  * to view video files when user pressed on play button.
  */
-public class GalleryActivity extends FragmentActivity implements
+public class GalleryActivity extends Activity implements
         OnTouchListener,
         OnClickListener,
         OnPageChangeListener,
